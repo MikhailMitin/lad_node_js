@@ -1,0 +1,21 @@
+{
+  "name": "1",
+  "version": "1.0.0",
+  "description": "home work 1 - tic tak toe",
+  "main": "index.js",
+  "repository": "",
+  "scripts": {
+    "test": "cucumber-js",
+    "start": "node index.js"
+  },
+  "author": "Mikhail Mitin <mitin_mihail@mail.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "cucumber": "^6.0.5",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-react": "^7.19.0"
+  }
+}

@@ -11,9 +11,9 @@ const sessions = require('./sessions');
 router.post('/registration', (req, res) => {
   const sessionId = users.registration(req.body.login, req.body.password);
   if (sessionId === -1) {
-    res.send(401, sessionId);
+    res.send(401, { sessionId });
   } else {
-    res.send(200, sessionId);
+    res.send(200, { sessionId });
   }
 });
 
@@ -22,7 +22,7 @@ router.post('/login', (req, res) => {
   if (sessionId === -1) {
     res.send(401);
   } else {
-    res.send(200, sessionId);
+    res.send(200, { sessionId });
   }
 });
 
@@ -34,7 +34,7 @@ router.post('/createNewGame', middleware.fullCheckUser, (req, res) => {
   if (gameId === -1) {
     res.send(400);
   } else {
-    res.send(200, gameId);
+    res.send(200, { gameId });
   }
 });
 
@@ -70,13 +70,14 @@ router.get('/getGamesIAmSecondPlayer', middleware.fullCheckUser, (req, res) => {
 router.get('/getWinnerOfGame', middleware.fullCheckUser, (req, res) => {
   const winnerId = games.getWinnerOfGame(req.body.gameId, req.userId);
   if (!winnerId) {
-    res.send(400, winnerId);
+    res.send(400, { winnerId });
   }
   // dead heat
   if (winnerId === -1) {
-    res.send(200, winnerId);
+    res.send(200, { winnerId });
   } else {
-    res.send(200, sessions.getSessionByUserId(winnerId));
+    const userId = sessions.getSessionByUserId(winnerId);
+    res.send(200, { winnerId: userId });
   }
 });
 
@@ -84,38 +85,38 @@ router.get('/getStatusOfGame', middleware.fullCheckUser, (req, res) => {
   const status = games.getStatusGame(req.body.gameId, req.userId);
 
   if (!status) {
-    res.send(400, status);
+    res.send(400, { status });
   } else {
-    res.send(200, status);
+    res.send(200, { status });
   }
 });
 
 router.post('/move', middleware.fullCheckUser, (req, res) => {
   const move = games.move(req.body.gameId, req.userId, req.body.x, req.body.y);
   if (move === undefined) {
-    res.send(403, move);
+    res.send(403, { move } );
   } else if (move === false) {
-    res.send(400, move);
+    res.send(400, { move });
   } else {
-    res.send(200, move);
+    res.send(200, { move });
   }
 });
 
 router.post('/connectSecondPlayerToGame', middleware.fullCheckUser, (req, res) => {
   const connect = games.connectSecondPlayerToGame(req.body.gameId, req.userId);
   if (!connect) {
-    res.send(400, connect);
+    res.send(400, { connect } );
   } else {
-    res.send(200, connect);
+    res.send(200, { connect } );
   }
 });
 
 router.get('/getField', middleware.fullCheckUser, (req, res) => {
   const field = games.getField(req.body.gameId, req.userId);
   if (!field) {
-    res.send(400, field);
+    res.send(400, { field } );
   } else {
-    res.send(200, field);
+    res.send(200, { field } );
   }
 });
 

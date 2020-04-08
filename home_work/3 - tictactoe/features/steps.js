@@ -167,15 +167,15 @@ Given('пользователь с сессией {string} получает ст
             .send({ gameId })
             .set('authorization', sessionId)
             .then((res) => {
-                setLastResponse(res.status, res.text); // статус в видет текста отдается
+                setLastResponse(res.status, res.body);
             });
 });
 
 Then('статус игры {string}', (status) => {
     if (lastResponse.status !== 200) {
         throw lastResponse.status;
-    } else if (lastResponse.body !== status) {
-        throw lastResponse.body;
+    } else if (lastResponse.body.status !== status) {
+        throw lastResponse.body.status;
     }
 });
 
@@ -212,7 +212,7 @@ Then('игрок с сессией {string}, в игре {string}, получа�
             .then((res) => {
                 setLastResponse(res.status, res.body);
 
-                const currentField = libForTest.fieldArrayToString(res.body);
+                const currentField = libForTest.fieldArrayToString(res.body.field);
 
                 if (currentField !== inputFieldString) {
                     throw currentField;
@@ -230,10 +230,10 @@ Then('в игре {string}, победил игрок с сессией {string}
             .send({ gameId })
             .set('authorization', sessionId)
             .then((res) => {
-                setLastResponse(res.status, res.text); // статус в видет текста отдается
+                setLastResponse(res.status, res.body);
 
-                if (res.text !== sessionId) {
-                    throw res.text;
+                if (res.body.winnerId !== sessionId) {
+                    throw res.body;
                 }
             });
 });
